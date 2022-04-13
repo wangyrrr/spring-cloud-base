@@ -9,17 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
+    <artifactId>system</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>common-mybatis</module>
-        <module>common-redis</module>
-        <module>common-redisson</module>
-        <module>common-account</module>
-        <module>common-knife4j</module>
-        <module>common-core</module>
-        <module>common-druid</module>
-        <module>common-rabbitmq</module>
+        <module>system-api</module>
+        <module>system-biz</module>
     </modules>
 
     <properties>
