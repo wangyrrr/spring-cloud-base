@@ -12,7 +12,6 @@
     <artifactId>common</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>common-mybatis</module>
         <module>common-redis</module>
         <module>common-redisson</module>
         <module>common-account</module>
