@@ -30,6 +30,14 @@ public class Result<T> implements Serializable {
     private T data;
 
     /**
+     * 是否响应正常
+     * @return
+     */
+    public boolean isOk() {
+        return ResultCodeEnum.SUCCESS.getCode().equals(this.code);
+    }
+
+    /**
      * 响应结果
      * @param <T>
      * @return
