@@ -1,6 +1,6 @@
 package org.example.common.aop;
 
-import org.apache.commons.lang.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import org.example.common.annotation.SystemLogin;
 import org.example.common.bo.SystemLoginUserBO;
 import org.example.common.enums.ResultCodeEnum;

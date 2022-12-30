@@ -37,6 +37,21 @@ public class GlobalExceptionAdvice {
         return defHandler(ResultCodeEnum.ERROR.getCode(), ResultCodeEnum.ERROR.getMsg(), ex);
     }
 
+
+    /**
+     * 全局异常捕捉处理
+     * 返回状态码:500
+     * @param ex
+     * @return
+     */
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = RuntimeException.class)
+    public Result errorHandler(RuntimeException ex) {
+        return defHandler(ResultCodeEnum.ERROR.getCode(), ResultCodeEnum.ERROR.getMsg(), ex);
+    }
+
+
     /**
      * 返回状态码:405
      */

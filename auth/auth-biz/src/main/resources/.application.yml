@@ -1,0 +1,6 @@
+server:
+  port: 8040
+
+sys:
+  jwt:
+    key: 2162d3e65a421bc0ac76ae5acfe29c650becb73f2a9b8ce57941036331b1aaa8

@@ -37,7 +37,7 @@ public class LoggingAspect {
     /**
      * 切入点
      */
-    @Pointcut("execution(* com.example.demo.controller.*.*(..))")
+    @Pointcut("execution(* org.example.*.biz.comtroller.*.*(..))")
     public void executeResource() {
 
     }

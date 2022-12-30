@@ -14,8 +14,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Author: WangYuanrong
  * @Date: 2022/4/8 11:11
  */
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = {"org.example"})
 public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
+
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         return true;
