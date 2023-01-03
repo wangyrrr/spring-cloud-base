@@ -1,0 +1,23 @@
+server:
+  port: 8000
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lowerCaseServiceId: true
+      routes:
+        - id: system
+          uri: lb://system
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+        - id: search
+          uri: lb://search
+          predicates:
+            - Path=/search/**
+          filters:
+            - StripPrefix=1

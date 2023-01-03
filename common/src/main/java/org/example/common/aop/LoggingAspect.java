@@ -37,7 +37,7 @@ public class LoggingAspect {
     /**
      * 切入点
      */
-    @Pointcut("execution(* org.example.*.biz.comtroller.*.*(..))")
+    @Pointcut("execution(* org.example.*.biz.controller.*.*(..))")
     public void executeResource() {
 
     }
@@ -86,7 +86,6 @@ public class LoggingAspect {
         Long start = (Long) request.getAttribute(START_TIME);
         Long end = System.currentTimeMillis();
         log.info("【Time】：{}ms", end - start);
-        log.info("【Environment】：{}", environment.getActiveProfiles()[0]);
         log.info("【User-Agent】：{}", userAgent);
     }
 }

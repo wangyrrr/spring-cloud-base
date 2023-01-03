@@ -3,6 +3,7 @@ package org.example.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.enums.ResultCodeEnum;
 import org.example.common.response.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,17 +41,18 @@ public class GlobalExceptionAdvice {
     }
 
 
-    /**
-     * 全局异常捕捉处理
-     * 返回状态码:500
-     * @param ex
-     * @return
-     */
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = RuntimeException.class)
-    public Result errorHandler(RuntimeException ex) {
-        return defHandler(ResultCodeEnum.ERROR.getCode(), ResultCodeEnum.ERROR.getMsg(), ex);
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public Result<?> handlerNoFoundException(Exception e) {
+        return defHandler(404, "路径不存在，请检查路径是否正确", e);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(DuplicateKeyException.class)
+    public Result<?> handleDuplicateKeyException(DuplicateKeyException e){
+        return defHandler(ResultCodeEnum.ERROR.getCode(), "数据库中已存在该记录", e);
     }
 
 
@@ -74,6 +78,15 @@ public class GlobalExceptionAdvice {
         return defHandler(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), "不支持当前媒体类型", ex);
     }
 
+    /**
+     * spring默认上传大小100MB 超出大小捕获异常MaxUploadSizeExceededException
+     */
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Result handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return defHandler(500, "文件大小超出10MB限制, 请压缩或降低文件质量! ", e);
+    }
 
     /**
      * 自定义异常处理
