@@ -7,7 +7,7 @@ spring:
         server-addr: 175.178.255.153:8848
         namespace: 6023a553-ebb8-45f6-99eb-e6e43ef911e7
         file-extension: yml
-        shared-configs: common.yml
+#        shared-configs: common.yml
       discovery:
         server-addr: 175.178.255.153:8848
         namespace: 6023a553-ebb8-45f6-99eb-e6e43ef911e7

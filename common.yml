@@ -31,7 +31,7 @@ spring:
       shutdown-timeout: 100
       pool:
         max-active: 8
-        max-idle: 8
+        max-idle: 4
         max-wait: 30
         min-idle: 0
   rabbitmq:
@@ -48,7 +48,11 @@ spring:
     #  格式化返回时间 yyyy-MM-dd HH:mm:ss
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
+  sleuth:
+    sampler:
+      probability: 1.0
+  profiles:
+    active: dev
 
 
 

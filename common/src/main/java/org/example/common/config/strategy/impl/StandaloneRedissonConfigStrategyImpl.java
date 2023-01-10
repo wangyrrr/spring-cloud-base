@@ -27,6 +27,7 @@ public class StandaloneRedissonConfigStrategyImpl implements RedissonConfigStrat
             if (!StringUtils.isEmpty(password)) {
                 config.useSingleServer().setPassword(password);
             }
+            config.setNettyThreads(8);
             log.info("初始化Redisson单机配置,连接地址:" + address);
         } catch (Exception e) {
             log.error("单机Redisson初始化错误", e);

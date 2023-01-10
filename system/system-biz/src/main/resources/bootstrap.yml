@@ -14,3 +14,9 @@ spring:
   datasource:
     druid:
       log-abandoned: true
+
+server:
+  tomcat:
+    max-connections: 500
+    threads:
+      max: 40

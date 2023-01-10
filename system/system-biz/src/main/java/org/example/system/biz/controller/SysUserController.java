@@ -29,4 +29,9 @@ public class SysUserController {
     public SysUserVO findById(@PathVariable Long id) {
         return sysUserService.findById(id);
     }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
 }
