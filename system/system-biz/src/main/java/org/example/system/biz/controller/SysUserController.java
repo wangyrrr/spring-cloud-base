@@ -30,8 +30,4 @@ public class SysUserController {
         return sysUserService.findById(id);
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
 }

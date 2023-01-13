@@ -1,8 +1,11 @@
 package org.example.common.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +25,11 @@ public class RabbitConfig {
     private RabbitProducerListener rabbitProducerListener;
 
     @Bean
+    public MessageConverter jsonMessageConverter(ObjectMapper objectMapper) {
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }
+
+    @Bean
     public RabbitTemplate rabbitTemplate(CachingConnectionFactory connectionFactory) {
 //        connectionFactory.setPublisherConfirms(true);
         connectionFactory.setPublisherReturns(true);
@@ -29,6 +37,7 @@ public class RabbitConfig {
         rabbitTemplate.setMandatory(true);
         rabbitTemplate.setConfirmCallback(rabbitProducerListener);
         rabbitTemplate.setReturnCallback(rabbitProducerListener);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
 

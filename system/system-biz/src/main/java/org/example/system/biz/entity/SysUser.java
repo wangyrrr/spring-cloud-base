@@ -55,7 +55,7 @@ public class SysUser implements Serializable {
     /**
      * 性别，1：男，2：女
      */
-    private Byte gender;
+    private Integer gender;
 
     /**
      * 手机号
@@ -80,7 +80,7 @@ public class SysUser implements Serializable {
     /**
      * 状态，0：冻结，1：正常
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 备注

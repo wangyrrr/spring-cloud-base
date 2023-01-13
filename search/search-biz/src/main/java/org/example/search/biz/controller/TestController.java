@@ -1,10 +1,13 @@
 package org.example.search.biz.controller;
 
+import org.example.common.constant.Constant;
 import org.example.common.response.Result;
+import org.example.search.api.dto.ConsumerDTO;
 import org.example.search.biz.model.Consumer;
 import org.example.search.biz.repository.ConsumerRepository;
 import org.example.system.api.feign.SysUserRemote;
 import org.example.system.api.vo.SysUserVO;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +30,20 @@ public class TestController {
 
     @Autowired
     private SysUserRemote sysUserRemote;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @GetMapping("/mq")
+    public Boolean mq() {
+        ConsumerDTO dto = new ConsumerDTO();
+        dto.setOpenId("xxxx");
+        dto.setMobile("13111111111");
+        rabbitTemplate.convertAndSend(Constant.CONSUMER_QUEUE, dto);
+        String s = "this is a string";
+        rabbitTemplate.convertAndSend(Constant.DEMO_QUEUE, s);
+        return true;
+    }
 
 
     @GetMapping("/findUser")

@@ -21,3 +21,16 @@ spring:
             - Path=/search/**
           filters:
             - StripPrefix=1
+  sleuth:
+    sampler:
+      probability: 1.0
+  profiles:
+    active: dev
+
+sys:
+  auth:
+    jwtKey: 2162d3e65a421bc0ac76ae5acfe29c650becb73f2a9b8ce57941036331b1aaa8
+    expire: 600
+    skipUrl:
+      - /demo/**
+      - /system/auth/**

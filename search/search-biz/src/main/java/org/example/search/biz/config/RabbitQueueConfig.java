@@ -20,4 +20,11 @@ public class RabbitQueueConfig {
         return new Queue(Constant.CONSUMER_QUEUE, true);
     }
 
+    /**
+     * 队列
+     */
+    @Bean
+    public Queue demoQueue() {
+        return new Queue(Constant.DEMO_QUEUE, true);
+    }
 }

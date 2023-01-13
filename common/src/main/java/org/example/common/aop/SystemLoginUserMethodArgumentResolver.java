@@ -36,11 +36,16 @@ public class SystemLoginUserMethodArgumentResolver implements HandlerMethodArgum
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         SystemLogin loginUser = methodParameter.getParameterAnnotation(SystemLogin.class);
         if (loginUser != null) {
-            String token = nativeWebRequest.getHeader("Authorization");
-            if (StringUtils.isBlank(token)) {
-                throw new ApiException(ResultCodeEnum.UNAUTHORIZED);
+            final String auth = nativeWebRequest.getHeader("auth");
+            if (StringUtils.isNotBlank(auth)) {
+                // 网关鉴权时解析过jwt，有传过来直接用
+            } else {
+                String token = nativeWebRequest.getHeader("Authorization");
+                if (StringUtils.isBlank(token)) {
+                    throw new ApiException(ResultCodeEnum.UNAUTHORIZED);
+                }
+                // todo 解析校验jwt获取用户信息
             }
-            // todo 解析校验jwt获取用户信息
             return new SystemLoginUserBO();
         }
         return null;

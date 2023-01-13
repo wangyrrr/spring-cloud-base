@@ -6,3 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/spring_cloud_base?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: root
+
+sys:
+  auth:
+    jwtKey: 2162d3e65a421bc0ac76ae5acfe29c650becb73f2a9b8ce57941036331b1aaa8

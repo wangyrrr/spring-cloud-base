@@ -24,4 +24,6 @@ public final class Constant {
 
 
     public static final String CONSUMER_QUEUE = "testBaseQueue";
+
+    public static final String DEMO_QUEUE = "demoBaseQueue";
 }

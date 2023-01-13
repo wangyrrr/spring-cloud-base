@@ -22,7 +22,7 @@ import java.util.Date;
 @Slf4j
 public class LoginController {
 
-    @Value("${sys.jwt.key}")
+    @Value("${sys.auth.jwtKey}")
     public String jwtKey;
 
 
