@@ -4,7 +4,7 @@
 # 架构思路  
 业务支撑层：各业务中心  
 技术支撑层：注册中心、配置中心、定时调度、网关、消息通知、第三方对接、监控、日志   
-基础设施层：云服务器、云容器、云数据库、云中间件、对象存储、CI/CD  
+基础设施层：云服务器、云容器引擎、云数据库、云中间件、对象存储、CI/CD  
 
 # 技术选项
 Maven  
@@ -14,12 +14,12 @@ RabbitMQ
 Spring Cloud  
 Mybatis-Plus  
 Sharding-JDBC  
-Sa-Token
 Nacos  
 Xxl-job  
+Sa-Token  
 Fastjson2  
 Skywalking  
-Prometheus
+Prometheus  
 Loki  
 
 
@@ -36,5 +36,5 @@ system：后台系统服务，用户菜单角色rbac权限体系
 
 # TODO
 升级到 spring cloud 2021  
-统一操作日志  
+AOP操作日志  
 base省市区  
