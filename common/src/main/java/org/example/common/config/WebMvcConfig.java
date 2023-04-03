@@ -1,5 +1,6 @@
 package org.example.common.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -8,8 +9,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,6 +16,7 @@ import java.util.List;
  * @Date: 2021/4/8 11:37
  */
 @Configuration
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
@@ -25,16 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        List<MappingJackson2HttpMessageConverter> list = new ArrayList<>();
-        final Iterator<HttpMessageConverter<?>> iterator = converters.iterator();
-        while (iterator.hasNext()) {
-            final HttpMessageConverter<?> converter = iterator.next();
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
-                list.add((MappingJackson2HttpMessageConverter) converter);
-                iterator.remove();
-            }
-        }
-        converters.addAll(0, list);
+        converters.add(0, new MappingJackson2HttpMessageConverter());
     }
 
     /**
@@ -46,7 +37,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
+//                .allowedOrigins("*")
                 .allowedMethods("*");
     }
 

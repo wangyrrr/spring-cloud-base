@@ -3,12 +3,13 @@ package org.example.gateway.filter;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.example.gateway.config.AuthProperties;
+import org.example.gateway.constant.Constant;
 import org.example.gateway.enums.ResultCodeEnum;
 import org.example.gateway.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,13 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * 客户端服务网关统一鉴权
+ * 客户端服务定义统一前缀
+ */
 @Component
 @Slf4j
-public class AuthorizationFilter implements GlobalFilter, Ordered {
+public class ClientAuthorizationFilter implements GlobalFilter, Ordered {
 
 
     @Autowired
@@ -38,12 +43,12 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String currentUrl = exchange.getRequest().getURI().getPath();
-        log.info("网关鉴权，currentUrl:{}", currentUrl);
-        if (this.skip(currentUrl)) {
+        log.info("客户端网关鉴权，currentUrl:{}", currentUrl);
+        if (!currentUrl.startsWith(Constant.CLIENT_API_PREFIX) || this.skip(currentUrl)) {
             return chain.filter(exchange);
         }
 
-        String token = exchange.getRequest().getHeaders().getFirst("token");
+        String token = exchange.getRequest().getHeaders().getFirst(Constant.CLIENT_TOKEN_NAME);
         if (StringUtils.isEmpty(token)) {
             log.error("需要认证的url:{},token为空", currentUrl);
             throw new ApiException(ResultCodeEnum.UNAUTHORIZED);

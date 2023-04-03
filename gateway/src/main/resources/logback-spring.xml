@@ -4,7 +4,7 @@
 <configuration scan="true">
     <!-- 通过property标签,来存放key-value数据,便于后面的动态获取,提高程序的灵活性 -->
     <property name="log-dir" value="log"/>
-    <property name="log-name" value="logFile"/>
+    <property name="log-name" value="gateway"/>
     <!-- >>>>>>>>>>>>>>>>>>>>>>>>>配置appender(可以配置多个)>>>>>>>>>>>>>>>>>>>>>>>>> -->
     <!--
           name:自取即可,

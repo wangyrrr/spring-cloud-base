@@ -7,10 +7,6 @@ package org.example.common.constant;
  */
 public final class Constant {
 
-    /**
-     * 登录用户redis session key
-     */
-    public static final String LOGIN_USER = "loginUser:";
 
     /**
      * 重复提交redis key

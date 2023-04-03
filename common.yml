@@ -35,7 +35,7 @@ spring:
         max-wait: 30
         min-idle: 0
   rabbitmq:
-    host: 175.178.255.153
+    host: 127.0.0.1
     port: 5672
     username: wet
     password: wet2022

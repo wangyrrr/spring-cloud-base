@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * 客户端鉴权配置
  * @Author: WangYuanrong
  * @Date: 2023/1/13 13:38
  */

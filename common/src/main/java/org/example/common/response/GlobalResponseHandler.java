@@ -32,6 +32,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 //        if (o instanceof String) {
 //            return JSON.toJSONString(result);
 //        }
+
         return result;
     }
 }
