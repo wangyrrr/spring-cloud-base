@@ -10,8 +10,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,12 +26,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 使用 aop 切面记录请求日志信息
- * </p>
+ * @author wangyuanrong
+ * @Date 2021/6/24 9:40
  */
+@ConditionalOnProperty(name = "sys.showRequestLog", havingValue = "true")
+@Configuration
 @Aspect
-@Component
 @Slf4j
 public class LoggingAspect {
 
@@ -41,7 +44,7 @@ public class LoggingAspect {
     /**
      * 切入点
      */
-    @Pointcut("execution(* org.example.*.biz.controller.*.*(..))")
+    @Pointcut("execution(* org.example.*.biz.controller..*.*(..))")
     public void executeResource() {
 
     }
@@ -55,9 +58,8 @@ public class LoggingAspect {
     public void beforeLog(JoinPoint point) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = Objects.requireNonNull(attributes).getRequest();
-        log.info("【URL】：{}", request.getRequestURL());
-        log.info("【IP】：{}", request.getRemoteAddr());
-        log.info("【Class】：{}，【Method】：{}", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
+        log.info("【IP】：{}, 【URL】：{}", request.getRemoteAddr(), request.getRequestURL());
+//        log.info("【Class】：{}，【Method】：{}", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
         if (point.getArgs() != null) {
             final List<Object> args = Arrays.stream(point.getArgs())
                     .filter(s -> !(s instanceof HttpServletRequest))
@@ -66,7 +68,9 @@ public class LoggingAspect {
             log.info("【Payload】：{}，", JSON.toJSONString(args));
         }
         Map<String, String[]> parameterMap = request.getParameterMap();
-        log.info("【Parameters】：{}，", JSON.toJSONString(parameterMap));
+        if (!CollectionUtils.isEmpty(parameterMap)) {
+            log.info("【Parameters】：{}，", JSON.toJSONString(parameterMap));
+        }
         Long start = System.currentTimeMillis();
         request.setAttribute(START_TIME, start);
     }
@@ -92,11 +96,11 @@ public class LoggingAspect {
     public void afterReturning() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = Objects.requireNonNull(attributes).getRequest();
-        String userAgent = request.getHeader("User-Agent");
+//        String userAgent = request.getHeader("User-Agent");
         Long start = (Long) request.getAttribute(START_TIME);
         Long end = System.currentTimeMillis();
         log.info("【Time】：{}ms", end - start);
-        log.info("【User-Agent】：{}", userAgent);
+//        log.info("【User-Agent】：{}", userAgent);
     }
 }
 

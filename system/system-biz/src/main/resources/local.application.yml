@@ -1,3 +1,4 @@
+# 本服务配置，不用nacos本机启动的时候放开
 server:
   port: 8010
 spring:

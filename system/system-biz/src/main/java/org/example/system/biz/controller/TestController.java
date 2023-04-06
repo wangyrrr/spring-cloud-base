@@ -2,10 +2,13 @@ package org.example.system.biz.controller;
 
 import org.example.common.exception.ApiException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @Author: WangYuanrong
@@ -26,11 +29,10 @@ public class TestController {
     }
 
 
-    @GetMapping("/http")
-    public void http(HttpServletRequest request) {
+    @PostMapping("/http")
+    public void http(HttpServletRequest request, @RequestBody Map<String, Object> map) {
         final String token = request.getHeader("token");
-        final String auth = request.getHeader("auth");
         System.out.println(token);
-        System.out.println(auth);
+        System.out.println(map);
     }
 }

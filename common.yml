@@ -57,6 +57,7 @@ spring:
 
 
 sys:
+  showRequestLog: true
   redisson:
     enabled: true
     type: STANDALONE

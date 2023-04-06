@@ -5,7 +5,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 
 /**
  * @Author: WangYuanrong
@@ -20,6 +22,9 @@ import org.springframework.context.annotation.ComponentScan;
 public class SystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SystemApplication.class, args);
+        ConfigurableApplicationContext application = SpringApplication.run(SystemApplication.class, args);
+        Environment env = application.getEnvironment();
+        String port = env.getProperty("server.port");
+        log.info("service start success. env:{}, port:{}", env.getActiveProfiles(), port);
     }
 }

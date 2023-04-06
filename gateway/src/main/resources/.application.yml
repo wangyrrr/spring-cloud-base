@@ -15,6 +15,12 @@ spring:
             - Path=/system/**
           filters:
             - StripPrefix=1
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
         - id: search
           uri: lb://search
           predicates:

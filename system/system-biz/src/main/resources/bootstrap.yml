@@ -1,13 +1,15 @@
 spring:
   application:
     name: system
-#  cloud:
-#    nacos:
-#      config:
-#        server-addr: 175.178.255.153:8848
-#        namespace: 6023a553-ebb8-45f6-99eb-e6e43ef911e7
-#        file-extension: yml
-#        shared-configs: common.yml
-#      discovery:
-#        server-addr: 175.178.255.153:8848
-#        namespace: 6023a553-ebb8-45f6-99eb-e6e43ef911e7
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.50.30:8848
+        namespace: 01435cbb-6023-49c0-838c-1231d87d9006
+        file-extension: yml
+        shared-configs: common.yml
+      discovery:
+        server-addr: 192.168.50.30:8848
+        namespace: 01435cbb-6023-49c0-838c-1231d87d9006
+#  profiles:
+#    active: dev

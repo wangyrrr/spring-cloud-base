@@ -1,5 +1,5 @@
 # spring-cloud-base
-基于spring cloud全家桶快速开发的脚手架  
+基于spring cloud & Alibaba全家桶快速开发的脚手架  
 
 # 架构思路  
 业务支撑层：各业务中心  
@@ -11,13 +11,15 @@ Maven
 Mysql  
 Redis  
 RabbitMQ  
-Spring Cloud  
+Spring Cloud Alibaba    
 Mybatis-Plus  
 Sharding-JDBC  
 Nacos  
 Xxl-job  
 Sa-Token  
 Fastjson2  
+Hutool  
+Tlog  
 Skywalking  
 Prometheus  
 Loki  
@@ -36,6 +38,8 @@ user：9010，客户端用户服务，客户端用户注册、登录、第三方
 ... ：业务服务
 
 # TODO
-升级到 spring cloud 2021  
+RabbitMQ改为RocketMQ  
+Sentinel流控与熔断降级  
+Seata分布式事务  
 AOP操作日志  
 base省市区  

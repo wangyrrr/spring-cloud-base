@@ -38,6 +38,14 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * 是否响应正常并返回数据
+     * @return
+     */
+    public boolean isOkAndHasData() {
+        return isOk() && data != null;
+    }
+
+    /**
      * 响应结果
      * @param <T>
      * @return

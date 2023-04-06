@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- scan="true"开启对配置信息的自动扫描(默认时间为60秒扫描一次) 注:当此文件的配置信息发生变化时,此设置的作用就体现出来了,不需要重启服务 -->
-<configuration scan="true">
+<configuration scan="false">
     <!-- 通过property标签,来存放key-value数据,便于后面的动态获取,提高程序的灵活性 -->
     <property name="log-dir" value="log"/>
     <property name="log-name" value="search"/>
@@ -11,25 +11,38 @@
           class:加载指定类(ch.qos.logback.core.ConsoleAppender类会将日志输出到>>>控制台),
           patter:指定输出的日志格式
       -->
-<!--    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
-<!--            <providers>-->
-<!--                <stackTrace>-->
-<!--                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">-->
-<!--                        <maxDepthPerThrowable>30</maxDepthPerThrowable>-->
-<!--                        <maxLength>4096</maxLength>-->
-<!--                        <shortenedClassNameLength>20</shortenedClassNameLength>-->
-<!--                        <rootCauseFirst>true</rootCauseFirst>-->
-<!--                    </throwableConverter>-->
-<!--                </stackTrace>-->
-<!--                <pattern>-->
-<!--                    <pattern>{ "date": "%date", "logger": "%logger", "level": "%level", "thread": "%thread", "message":-->
-<!--                        "%message", "traceId": "%mdc", "host_name": "${HOSTNAME}" }-->
-<!--                    </pattern>-->
-<!--                </pattern>-->
-<!--            </providers>-->
-<!--        </encoder>-->
-<!--    </appender>-->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <!--这里替换成AspectLogbackEncoder-->
+        <encoder charset="UTF-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 为logstash输出的JSON格式的Appender -->
+    <appender name="logstashAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>Logstash服务端IP:端口</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <!-- 日志输出编码 -->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <provider class="com.yomahub.tlog.logstash.logback.TLogLogstashLogbackProvider"/>
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                <pattern>
+                    <pattern>
+                        {
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "message": "%message",
+                        "stack_trace": "%exception{10}",
+                        "client_time": "%d{yyyy-MM-dd HH:mm:ss.SSS}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
     <!--
           name:自取即可,
           class:加载指定类(ch.qos.logback.core.rolling.RollingFileAppender类会将日志输出到>>>指定的文件中),
@@ -61,20 +74,12 @@
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder>
-            <!-- 日志输出格式 -->
-            <pattern>%d{HH:mm:ss.SSS} traceId[%X{X-B3-TraceId}] spanId[%X{X-B3-SpanId}] parentSpanId[%X{X-B3-ParentSpanId}]  [%thread] %-5level %logger{36}:%L- %msg%n</pattern>
-            <!-- 日志编码 -->
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        <!--这里替换成AspectLogbackEncoder-->
+        <encoder charset="UTF-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="consoleAppenderDev" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} traceId[%X{X-B3-TraceId}] spanId[%X{X-B3-SpanId}] parentSpanId[%X{X-B3-ParentSpanId}] [%thread] %-5level %logger{36}:%L- %msg%n</pattern>
-            <!-- 日志编码 -->
-            <charset class="java.nio.charset.Charset">UTF-8</charset>
-        </encoder>
-    </appender>
+
     <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>使用appender>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
     <!--
           指定[哪个包]下使用[哪个appender],并设置 记录到日志文件中的日志的最下
@@ -87,32 +92,27 @@
           root:logger的根节点,appender-ref:确定使用哪个appender,将日志信息显示在console
           注:如果不指定配置此项的话,那么SpringBoot启动后,将不会在console打印任何信息
       -->
-    <springProfile name="local">
+    <springProfile name="default,local,dev">
         <root level="INFO">
-            <appender-ref ref="consoleAppenderDev"/>
-        </root>
-    </springProfile>
-    <springProfile name="dev">
-        <root level="INFO">
-            <appender-ref ref="consoleAppenderDev"/>
+            <appender-ref ref="consoleAppender"/>
         </root>
     </springProfile>
     <springProfile name="test">
         <root level="INFO">
-            <appender-ref ref="consoleAppenderDev"/>
+            <appender-ref ref="fileAppender"/>
         </root>
     </springProfile>
     <springProfile name="uat">
         <root level="INFO">
-            <appender-ref ref="consoleAppender"/>
+            <appender-ref ref="logstashAppender"/>
         </root>
     </springProfile>
     <springProfile name="prod">
         <root level="INFO">
-            <appender-ref ref="consoleAppender"/>
+            <appender-ref ref="logstashAppender"/>
         </root>
     </springProfile>
-<!--    <root>-->
-<!--        <appender-ref ref="consoleAppender"/>-->
-<!--    </root>-->
+    <!--    <root>-->
+    <!--        <appender-ref ref="consoleAppender"/>-->
+    <!--    </root>-->
 </configuration>
