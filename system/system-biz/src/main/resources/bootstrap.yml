@@ -11,5 +11,7 @@ spring:
       discovery:
         server-addr: 192.168.50.30:8848
         namespace: 01435cbb-6023-49c0-838c-1231d87d9006
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 #  profiles:
 #    active: dev

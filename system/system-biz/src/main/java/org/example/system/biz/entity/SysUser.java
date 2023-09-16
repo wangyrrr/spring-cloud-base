@@ -3,11 +3,18 @@ package org.example.system.biz.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.example.common.valid.Insert;
+import org.example.common.valid.Update;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 系统用户表
@@ -19,6 +26,8 @@ public class SysUser implements Serializable {
     /**
      * 
      */
+    @Null(groups = Insert.class)
+    @NotNull(groups = Update.class)
     @TableId(type = IdType.AUTO)
     private Long id;
 
@@ -45,6 +54,7 @@ public class SysUser implements Serializable {
     /**
      * 用户名
      */
+    @NotBlank
     private String username;
 
     /**
@@ -90,7 +100,14 @@ public class SysUser implements Serializable {
     /**
      * 软删除，0：正常，1：已删除
      */
+    @TableLogic
     private Boolean deleted;
+
+    /**
+     * 拥有角色
+     */
+    @TableField(exist = false)
+    private List<Long> roles;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

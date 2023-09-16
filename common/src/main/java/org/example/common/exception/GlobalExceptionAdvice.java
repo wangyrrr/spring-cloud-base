@@ -52,7 +52,7 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(DuplicateKeyException.class)
     public Result<?> handleDuplicateKeyException(DuplicateKeyException e){
-        return defHandler(ResultCodeEnum.ERROR.getCode(), "数据库中已存在该记录", e);
+        return defHandler(ResultCodeEnum.ERROR.getCode(), "唯一索引冲突", e);
     }
 
 
@@ -90,12 +90,12 @@ public class GlobalExceptionAdvice {
 
     /**
      * 自定义异常处理
-     * 返回状态码: 500
+     * 返回状态码: 200
      * @param ex
      * @return
      */
     @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = ApiException.class)
     public Result handleException(ApiException ex) {
         return defHandler(ex.getCode(), ex.getMessage(), ex);

@@ -45,7 +45,7 @@ public class TestController {
     @GetMapping("/sysUser")
     public SysUserVO sysUser(@RequestParam Long id) {
         Result<SysUserVO> apiResult = sysUserApi.findById(id);
-        if (apiResult.isOkAndHasData()) {
+        if (apiResult.successAndHasData()) {
             return apiResult.getData();
         }
         return null;

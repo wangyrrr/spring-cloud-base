@@ -17,23 +17,29 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@ApiModel(value = "返回实体")
 public class Result<T> implements Serializable {
 
-//    @ApiModelProperty(value = "提示信息")
-    private String msg;
 
-//    @ApiModelProperty(value = "状态码，200表示成功，非200表示错误，提示用户返回的提示信息")
+    /**
+     * 状态码，200表示成功，非200表示错误，提示用户返回的提示信息
+     */
     private Integer code;
 
-//    @ApiModelProperty(value = "响应数据")
+    /**
+     * 提示信息
+     */
+    private String message;
+
+    /**
+     * 响应数据
+     */
     private T data;
 
     /**
      * 是否响应正常
      * @return
      */
-    public boolean isOk() {
+    public boolean success() {
         return ResultCodeEnum.SUCCESS.getCode().equals(this.code);
     }
 
@@ -41,33 +47,33 @@ public class Result<T> implements Serializable {
      * 是否响应正常并返回数据
      * @return
      */
-    public boolean isOkAndHasData() {
-        return isOk() && data != null;
+    public boolean successAndHasData() {
+        return success() && data != null;
     }
 
     /**
-     * 响应结果
-     * @param <T>
+     * 返回成功
      * @return
+     * @param <T>
      */
-    public static <T> Result<T> response() {
+    public static <T> Result<T> ok() {
         Result<T> res = new Result<>();
         res.setCode(ResultCodeEnum.SUCCESS.getCode());
-        res.setMsg(ResultCodeEnum.SUCCESS.getMsg());
+        res.setMessage(ResultCodeEnum.SUCCESS.getMsg());
         return res;
     }
 
     /**
-     * 根据消息码等生成接口返回对象
+     * 返回成功数据
      *
      * @param data 数据对象
      * @param <T>
      * @return
      */
-    public static <T> Result<T> response(T data) {
+    public static <T> Result<T> ok(T data) {
         Result<T> res = new Result<>();
         res.setCode(ResultCodeEnum.SUCCESS.getCode());
-        res.setMsg(ResultCodeEnum.SUCCESS.getMsg());
+        res.setMessage(ResultCodeEnum.SUCCESS.getMsg());
         res.setData(data);
         return res;
     }
@@ -83,15 +89,22 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> response(ResultCodeEnum resultCodeEnum, T data) {
         Result<T> res = new Result<>();
         res.setCode(resultCodeEnum.getCode());
-        res.setMsg(resultCodeEnum.getMsg());
+        res.setMessage(resultCodeEnum.getMsg());
         res.setData(data);
         return res;
     }
 
+    /**
+     * 根据消息码等生成接口返回对象
+     *
+     * @param resultCodeEnum 结果返回码
+     * @param <T>
+     * @return
+     */
     public static <T> Result<T> response(ResultCodeEnum resultCodeEnum) {
         Result<T> res = new Result<>();
         res.setCode(resultCodeEnum.getCode());
-        res.setMsg(resultCodeEnum.getMsg());
+        res.setMessage(resultCodeEnum.getMsg());
         return res;
     }
 
@@ -107,7 +120,7 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> response(Integer code, String msg, T data) {
         Result<T> res = new Result<>();
         res.setCode(code);
-        res.setMsg(msg);
+        res.setMessage(msg);
         res.setData(data);
         return res;
     }
@@ -123,7 +136,7 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> exception(Integer code, String msg) {
         Result<T> res = new Result<>();
         res.setCode(code);
-        res.setMsg(msg);
+        res.setMessage(msg);
         return res;
     }
 

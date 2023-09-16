@@ -27,6 +27,6 @@ public class SysUserApiImpl implements SysUserApi {
         if (true) {
             throw new ApiException("异常");
         }
-        return Result.response(sysUserService.findById(id));
+        return Result.ok(sysUserService.findById(id));
     }
 }

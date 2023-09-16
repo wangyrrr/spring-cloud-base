@@ -14,7 +14,7 @@
             <result property="menuType" column="menu_type" jdbcType="TINYINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="code" column="code" jdbcType="VARCHAR"/>
-            <result property="permPath" column="perm_path" jdbcType="VARCHAR"/>
+            <result property="path" column="perm_path" jdbcType="VARCHAR"/>
             <result property="icon" column="icon" jdbcType="VARCHAR"/>
             <result property="sort" column="sort" jdbcType="INTEGER"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
